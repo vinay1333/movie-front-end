@@ -9,7 +9,7 @@ interface WelcomeScreenProps {
 const WelcomeScreen: React.FC<WelcomeScreenProps> = function (props) {
   return (
     <div className="welcome-screen">
-      <h1>Welcome to Movie Recommender</h1>
+      <h1>Welcome to Movie Guru</h1>
       <p>Answer a few questions to get a movie recommendation!</p>
       
       {/* Button to start the questionnaire */}
@@ -22,4 +22,5 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = function (props) {
 
 // Export the component so it can be used in other files
 export default WelcomeScreen;
+
 

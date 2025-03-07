@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// LoadingScreen component to show a loading spinner while fetching the movie
 const LoadingScreen: React.FC = () => {
   const navigate = useNavigate();
 
@@ -22,6 +21,7 @@ const LoadingScreen: React.FC = () => {
 };
 
 export default LoadingScreen;
+
 
 
 

@@ -8,7 +8,7 @@ interface QuestionProps {
     options: string[];
   };
   answer: string;
-  onAnswerChange: (answer: string) => void;
+  onAnswerChange: (answer: string) => void; // Function to handle answer change
 }
 
 const Question: React.FC<QuestionProps> = (props) => {
@@ -25,7 +25,7 @@ const Question: React.FC<QuestionProps> = (props) => {
               name={`question-${props.question.id}`}
               value={option}
               checked={props.answer === option}
-              onChange={() => props.onAnswerChange(option)}
+              onChange={() => props.onAnswerChange(option)} // Update the answer on selection
             />
             {option}
           </label>
@@ -36,3 +36,4 @@ const Question: React.FC<QuestionProps> = (props) => {
 };
 
 export default Question;
+

@@ -5,7 +5,6 @@ import Questionnaire from "/Users/vinay/first-vite/src/components/Questionaire.t
 import LoadingScreen from "/Users/vinay/first-vite/src/components/LoadingScreen.tsx";
 import MovieResult from "/Users/vinay/first-vite/src/components/MovieResult.tsx"; // Add your MovieResult component
 
-// Define the App component
 const App: React.FC = () => {
   const [started, setStarted] = useState<boolean>(false); // State to track if questionnaire started
   const [submitted, setSubmitted] = useState<boolean>(false); // State to track if questionnaire is submitted
@@ -17,28 +16,40 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <Routes>
-        {/* Main App route rendering */}
-        <Route path="/" element={
-          !started ? (
-            // Show WelcomeScreen if questionnaire hasn't started
-            <WelcomeScreen onStart={() => setStarted(true)} />
-          ) : submitted ? (
-            // Show LoadingScreen if questionnaire is submitted
-            <LoadingScreen />
-          ) : (
-            // Show Questionnaire component and pass onSubmit prop to handle form submission
-            <Questionnaire onSubmit={handleFormSubmit} />
-          )
-        } />
-        {/* Movie Result route */}
-        <Route path="/movie-result" element={<MovieResult />} />
-      </Routes>
+      <div>
+        {/* YouTube Video Background */}
+        <iframe
+          className="background-video"
+          width="100%"
+          height="100%"
+          src="https://www.youtube.com/embed/xBasQG_6p40?start=30&autoplay=1&mute=1&loop=1&playlist=xBasQG_6p40"
+          frameBorder="0"
+          allow="autoplay; encrypted-media"
+          allowFullScreen
+          ></iframe>
+
+        <Routes>
+          {/* Main App route rendering */}
+          <Route path="/" element={
+            !started ? (
+              <WelcomeScreen onStart={() => setStarted(true)} />
+            ) : submitted ? (
+              <LoadingScreen />
+            ) : (
+              <Questionnaire onSubmit={handleFormSubmit} />
+            )
+          } />
+          {/* Movie Result route */}
+          <Route path="/movie-result" element={<MovieResult />} />
+        </Routes>
+      </div>
     </Router>
   );
 };
 
 export default App;
+
+
 
 
 
