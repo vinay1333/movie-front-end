@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
-import WelcomeScreen from "/Users/vinay/first-vite/src/components/WelcomeScreen.tsx";
-import Questionnaire from "/Users/vinay/first-vite/src/components/Questionaire.tsx";
-import LoadingScreen from "/Users/vinay/first-vite/src/components/LoadingScreen.tsx";
-import MovieResult from "/Users/vinay/first-vite/src/components/MovieResult.tsx"; // Add your MovieResult component
+import WelcomeScreen from "./components/WelcomeScreen.tsx";
+import Questionnaire from "./components/Questionaire.tsx";
+import LoadingScreen from "./components/LoadingScreen.tsx";
+import MovieResult from "./components/MovieResult.tsx"; // Add your MovieResult component
 
 const App: React.FC = () => {
   const [started, setStarted] = useState<boolean>(false); // State to track if questionnaire started
