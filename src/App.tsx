@@ -18,16 +18,18 @@ const App: React.FC = () => {
     <Router>
       <div>
         {/* YouTube Video Background */}
-        <iframe
-          className="background-video"
-          width="100%"
-          height="100%"
-          src="https://www.youtube.com/embed/xBasQG_6p40?start=30&autoplay=1&mute=1&loop=1&playlist=xBasQG_6p40"
-          frameBorder="0"
-          allow="autoplay; encrypted-media"
-          allowFullScreen
-          ></iframe>
-
+        <video 
+          className="background-video" 
+          width="100%" 
+          height="100%" 
+          autoPlay 
+          loop 
+        muted 
+        >
+        <source src="/Bvid.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+        </video>
+        
         <Routes>
           {/* Main App route rendering */}
           <Route path="/" element={
