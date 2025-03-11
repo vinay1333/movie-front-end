@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { API_URL } from "../config.ts"; // Import the API_URL from config.ts
 
-// MovieResult component fetches and displays movie details
 const MovieResult: React.FC = () => {
   // Movie state to hold movie details
   const [movie, setMovie] = useState<any | null>(null);
@@ -9,45 +9,40 @@ const MovieResult: React.FC = () => {
   // Error state to handle any errors during fetch
   const [error, setError] = useState<string | null>(null);
 
-  // Get the API URL from the environment variable (defaults to localhost if not set)
-  const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
-
   // Fetch movie data when the component is mounted
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const response = await fetch(`${API_URL}/films`); // API call to fetch films
+        const response = await fetch(`${API_URL}/films`); // Use API_URL dynamically
         if (!response.ok) {
-          throw new Error("Failed to fetch movies"); // Handle unsuccessful response
+          throw new Error("Failed to fetch movies");
         }
-        const movies = await response.json(); // Parse the response as JSON
+        const movies = await response.json();
         if (movies.length > 0) {
           // Randomly select a movie if available
           const randomMovie = movies[Math.floor(Math.random() * movies.length)];
-          setMovie(randomMovie); // Set the selected movie
+          setMovie(randomMovie);
         } else {
-          setError("No movies found."); // Error handling if no movies are returned
+          setError("No movies found.");
         }
       } catch (error: unknown) {
-        // Type assertion here to let TypeScript know we're working with an Error
         if (error instanceof Error) {
-          setError("Error fetching movies: " + error.message); // Handle fetch error
+          setError("Error fetching movies: " + error.message);
         } else {
           setError("An unknown error occurred.");
         }
       } finally {
-        setLoading(false); // Set loading to false when fetch is done
+        setLoading(false);
       }
     };
 
     fetchMovie();
-  }, [API_URL]); // Empty dependency array ensures this runs only once after the component mounts
+  }, []); // Run only once after component mounts
 
   const handleRegenerate = () => {
     setLoading(true);
     setError(null);
-    setMovie(null); // Clear current movie state when regenerating
-    // Trigger a new fetch when the "Regenerate" button is clicked
+    setMovie(null);
     const fetchMovie = async () => {
       try {
         const response = await fetch(`${API_URL}/films`);
@@ -76,7 +71,6 @@ const MovieResult: React.FC = () => {
   };
 
   const handleStartAgain = () => {
-    // Redirect to the Welcome Screen
     window.location.href = "/";
   };
 
@@ -91,7 +85,7 @@ const MovieResult: React.FC = () => {
           <div>
             <h2>Movie Recommendation</h2>
             <p>Title: {movie.title}</p>
-            <p>Genre: {movie.categoryId}</p> {/* Example: Update to actual category name */}
+            <p>Genre: {movie.categoryId}</p>
             <p>Duration: {movie.length} minutes</p>
             <p>Rating: {movie.rating}</p>
             <p>Release Year: {movie.releaseYear}</p>
@@ -108,6 +102,7 @@ const MovieResult: React.FC = () => {
 };
 
 export default MovieResult;
+
 
 
 
