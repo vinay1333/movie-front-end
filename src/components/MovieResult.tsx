@@ -9,11 +9,14 @@ const MovieResult: React.FC = () => {
   // Error state to handle any errors during fetch
   const [error, setError] = useState<string | null>(null);
 
+  // Get the API URL from the environment variable (defaults to localhost if not set)
+  const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
+
   // Fetch movie data when the component is mounted
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const response = await fetch("http://localhost:8080/films"); // API call to fetch films
+        const response = await fetch(`${API_URL}/films`); // API call to fetch films
         if (!response.ok) {
           throw new Error("Failed to fetch movies"); // Handle unsuccessful response
         }
@@ -38,7 +41,7 @@ const MovieResult: React.FC = () => {
     };
 
     fetchMovie();
-  }, []); // Empty dependency array ensures this runs only once after the component mounts
+  }, [API_URL]); // Empty dependency array ensures this runs only once after the component mounts
 
   const handleRegenerate = () => {
     setLoading(true);
@@ -47,7 +50,7 @@ const MovieResult: React.FC = () => {
     // Trigger a new fetch when the "Regenerate" button is clicked
     const fetchMovie = async () => {
       try {
-        const response = await fetch("http://localhost:8080/films");
+        const response = await fetch(`${API_URL}/films`);
         if (!response.ok) {
           throw new Error("Failed to fetch movies");
         }
@@ -105,6 +108,7 @@ const MovieResult: React.FC = () => {
 };
 
 export default MovieResult;
+
 
 
 
