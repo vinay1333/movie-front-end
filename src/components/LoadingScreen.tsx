@@ -1,26 +1,37 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
 const LoadingScreen: React.FC = () => {
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Simulate the 3-second wait
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/movie-result"); // After 3 seconds, navigate to the movie result page
-    }, 3000); // Set the time to 3 seconds (adjustable)
+      setIsLoading(false); // After 3 seconds, stop showing the loading screen
+    }, 3000); // Set timeout for 3 seconds
 
-    return () => clearTimeout(timer); // Cleanup timer on unmount
-  }, [navigate]);
+    return () => clearTimeout(timer); // Cleanup timeout on unmount
+  }, []);
 
   return (
     <div className="loading-screen">
-      <h2>Fetching Your Movie...</h2>
-      <div className="spinner"></div>
+      {isLoading ? (
+        <>
+          <h2>Fetching Your Movie...</h2>
+          <div className="spinner"></div> {/* You can add a CSS spinner here */}
+        </>
+      ) : (
+        <div>Loading complete, transitioning to movie details...</div> // Optional message after 3 seconds
+      )}
     </div>
   );
 };
 
 export default LoadingScreen;
+
+
+
+
+
 
 
 

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { API_URL } from "../config.ts"; // Import the API_URL from config.ts
+import LoadingScreen from "./LoadingScreen.tsx"; // Import the LoadingScreen component
 
 const MovieResult: React.FC = () => {
-  // Movie state to hold movie details
-  const [movie, setMovie] = useState<any | null>(null);
-  // Loading state to manage fetch process
-  const [loading, setLoading] = useState<boolean>(true);
-  // Error state to handle any errors during fetch
-  const [error, setError] = useState<string | null>(null);
+  const [movie, setMovie] = useState<any | null>(null); // Movie state to hold movie details
+  const [loading, setLoading] = useState<boolean>(true); // Loading state to manage the loading screen
+  const [error, setError] = useState<string | null>(null); // Error state to handle any errors during fetch
 
   // Fetch movie data when the component is mounted
   useEffect(() => {
@@ -32,7 +30,10 @@ const MovieResult: React.FC = () => {
           setError("An unknown error occurred.");
         }
       } finally {
-        setLoading(false);
+        // Wait for 3 seconds before changing the loading state
+        setTimeout(() => {
+          setLoading(false); // Once 3 seconds have passed, stop the loading screen
+        }, 3000);
       }
     };
 
@@ -63,7 +64,10 @@ const MovieResult: React.FC = () => {
           setError("An unknown error occurred.");
         }
       } finally {
-        setLoading(false);
+        // Wait for 3 seconds before changing the loading state
+        setTimeout(() => {
+          setLoading(false); // Once 3 seconds have passed, stop the loading screen
+        }, 3000);
       }
     };
 
@@ -77,7 +81,8 @@ const MovieResult: React.FC = () => {
   return (
     <div className="movie-result">
       {loading ? (
-        <div>Loading...</div>
+        // Display LoadingScreen with 3 second delay
+        <LoadingScreen />
       ) : error ? (
         <div>{error}</div>
       ) : (
@@ -102,6 +107,11 @@ const MovieResult: React.FC = () => {
 };
 
 export default MovieResult;
+
+
+
+
+
 
 
 
