@@ -2,18 +2,12 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import WelcomeScreen from "./components/WelcomeScreen.tsx";
 import Questionnaire from "./components/Questionaire.tsx";
-import LoadingScreen from "./components/LoadingScreen.tsx";
-import MovieResult from "./components/MovieResult.tsx"; // Add your MovieResult component
+import MovieResult from "./components/MovieResult.tsx";
 
 // Component that handles routing and display logic
 const App: React.FC = () => {
-  const [started, setStarted] = useState<boolean>(false); // State to track if questionnaire started
+  const [started, setStarted] = useState<boolean>(false);
   const navigate = useNavigate(); // Use navigate inside the router context
-
-  // Handle form submission and navigate to movie result page
-  const handleFormSubmit = (): void => {
-    navigate("/movie-result"); // Navigate directly to the movie result page after form submission
-  };
 
   // Handle the start button click to navigate to the Questionnaire page
   const handleStart = () => {
@@ -44,12 +38,12 @@ const App: React.FC = () => {
             !started ? (
               <WelcomeScreen onStart={handleStart} />
             ) : (
-              <Questionnaire onSubmit={handleFormSubmit} />
+              <Questionnaire />
             )
           }
         />
         {/* Questionnaire route */}
-        <Route path="/questionnaire" element={<Questionnaire onSubmit={handleFormSubmit} />} />
+        <Route path="/questionnaire" element={<Questionnaire />} />
         {/* Movie Result route */}
         <Route path="/movie-result" element={<MovieResult />} />
       </Routes>
@@ -60,7 +54,7 @@ const App: React.FC = () => {
 // Wrap App component with Router to provide routing context
 const AppWithRouter: React.FC = () => {
   return (
-    <Router>  {/* Wrap the entire App in Router */}
+    <Router> {/* Wrap the entire App in Router */}
       <App />
     </Router>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Define the structure for the questions
 const questions = [
@@ -9,12 +10,73 @@ const questions = [
   { id: 5, question: "What Language would you like to watch in?", options: ["English", "Italian", "Japanese", "Mandarin", "French", "German", "Any"] },
 ];
 
-// Define prop type for Questionnaire component
-interface QuestionnaireProps {
-  onSubmit: () => void; // Expect onSubmit as a function
-}
+// Mappings to convert answers to API query params
+const genreMap: Record<string, number | null> = {
+  "Action": 1, "Animation": 2, "Children": 3, "Classics": 4, "Comedy": 5,
+  "Documentary": 6, "Drama": 7, "Foreign": 9, "Horror": 11,
+  "Sci-Fi": 14, "Sports": 15, "Travel": 16, "Any": null
+};
 
-const Questionnaire: React.FC<QuestionnaireProps> = ({ onSubmit }) => {
+const durationMap: Record<string, number | null> = {
+  "Not much (Under 1 hour)": 0,
+  "Decent amount (1-2 hours)": 1,
+  "I'm chilling (Over 2 hours)": 2,
+  "Any": null
+};
+
+const ratingMap: Record<string, string | null> = {
+  "G": "G", "PG": "PG", "PG-13": "PG-13", "NC-17": "NC-17", "R": "R", "Any": null
+};
+
+const yearMap: Record<string, number | null> = {
+  "Any": null,
+  ...Array.from({ length: 20 }, (_, i) => ({
+    [(2006 + i).toString()]: 2006 + i
+  })).reduce((acc, obj) => ({ ...acc, ...obj }), {})
+};
+
+const languageMap: Record<string, number | null> = {
+  "English": 1, "Italian": 2, "Japanese": 3, "Mandarin": 4, "French": 5, "German": 6, "Any": null
+};
+
+const convertAnswersForAPI = (answers: string[]) => {
+  return {
+    categoryId: genreMap[answers[0]] || null,
+    duration: durationMap[answers[1]] || null,
+    rating: ratingMap[answers[2]] || null,
+    releaseYear: yearMap[answers[3]] || null,
+    languageId: languageMap[answers[4]] || null
+  };
+};
+
+const getMovies = async (filters: any) => {
+  const queryParams = new URLSearchParams(
+    Object.fromEntries(
+      Object.entries(filters)
+        .filter(([_, value]) => value !== null)
+        .map(([key, value]) => [key, String(value)])
+    )
+  );
+
+  // ✅ Correct endpoint
+  const apiUrl = `http://localhost:8080/films/filter?${queryParams.toString()}`;
+  console.log("API URL:", apiUrl); // ✅ Log the corrected URL for debugging
+
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) throw new Error("Failed to fetch movies");
+    const movies = await response.json();
+    console.log("Movies fetched:", movies); // ✅ Log fetched movies
+    return movies;
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    return [];
+  }
+};
+
+
+const Questionnaire: React.FC = () => {
+  const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<string[]>(new Array(questions.length).fill(""));
 
@@ -22,26 +84,30 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onSubmit }) => {
     const answer = event.target.value;
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = answer;
-    setAnswers(newAnswers); // Update the answer for the current question
+    setAnswers(newAnswers);
   };
 
   const handleNext = (): void => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1); // Move to the next question
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
 
   const handlePrevious = (): void => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1); // Move to the previous question
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
 
-  const progressPercentage: number = ((currentQuestionIndex + 1) / questions.length) * 100; // Calculate progress percentage
+  const handleFormSubmit = async (): Promise<void> => {
+    const filters = convertAnswersForAPI(answers);
+    const movies = await getMovies(filters);
 
-  const handleFormSubmit = (): void => {
-    // Call onSubmit prop when the form is submitted
-    onSubmit();
+    if (movies.length > 0) {
+      navigate("/movie-result", { state: { movies } });
+    } else {
+      alert("No movies found. Try adjusting your filters.");
+    }
   };
 
   return (
@@ -49,10 +115,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onSubmit }) => {
       <h2>Movie Recommendation Questionnaire</h2>
       <div>
         <p>{questions[currentQuestionIndex].question}</p>
-        <select
-          value={answers[currentQuestionIndex]}
-          onChange={handleAnswerChange}
-        >
+        <select value={answers[currentQuestionIndex]} onChange={handleAnswerChange}>
           <option value="">Select an option</option>
           {questions[currentQuestionIndex].options.map((option, index) => (
             <option key={index} value={option}>
@@ -71,12 +134,6 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onSubmit }) => {
         </button>
       </div>
 
-      <div className="progress-bar">
-        <progress value={progressPercentage} max={100}></progress>
-        <span>{Math.round(progressPercentage)}%</span> {/* Display progress as percentage */}
-      </div>
-
-      {/* Submit button */}
       {currentQuestionIndex === questions.length - 1 && (
         <button onClick={handleFormSubmit}>Submit</button>
       )}
@@ -85,6 +142,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onSubmit }) => {
 };
 
 export default Questionnaire;
+
 
 
 
