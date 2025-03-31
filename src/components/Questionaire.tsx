@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 
 // Define the structure for the questions
 const questions = [
@@ -59,7 +60,7 @@ const getMovies = async (filters: any) => {
   );
 
   // ✅ Correct endpoint
-  const apiUrl = `http://localhost:8080/films/filter?${queryParams.toString()}`;
+  const apiUrl = `${API_URL}/films/filter?${queryParams.toString()}`;
   console.log("API URL:", apiUrl); // ✅ Log the corrected URL for debugging
 
   try {

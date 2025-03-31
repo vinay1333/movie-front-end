@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen.tsx"; // Import loading animation
+import { API_URL } from "../config";
 
 const MovieResult: React.FC = () => {
   const location = useLocation();
@@ -61,7 +62,7 @@ const MovieResult: React.FC = () => {
     if (!showCast) {
       setLoadingCast(true);
       try {
-        const response = await fetch(`http://localhost:8080/films/${movie.id}/actors`);
+        const response = await fetch(`${API_URL}/films/${movie.id}/actors`);
         if (!response.ok) {
           throw new Error("Failed to fetch cast data");
         }
