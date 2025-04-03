@@ -3,49 +3,39 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import WelcomeScreen from "./components/WelcomeScreen.tsx";
 import Questionnaire from "./components/Questionaire.tsx";
 import MovieResult from "./components/MovieResult.tsx";
+import Actors from "./components/Actors.tsx";
 
 // Component that handles routing and display logic
 const App: React.FC = () => {
   const [started, setStarted] = useState<boolean>(false);
-  const navigate = useNavigate(); // Use navigate inside the router context
+  const navigate = useNavigate(); // Hook for navigation
 
   // Handle the start button click to navigate to the Questionnaire page
   const handleStart = () => {
-    setStarted(true); // Set state to start questionnaire
-    navigate("/questionnaire"); // Navigate to /questionnaire page
+    setStarted(true);
+    navigate("/questionnaire"); // Navigate to questionnaire
   };
 
   return (
     <div>
-      {/* YouTube Video Background */}
-      <video
-        className="background-video"
-        width="100%"
-        height="100%"
-        autoPlay
-        loop
-        muted
-      >
+      {/* Video Background */}
+      <video className="background-video" width="100%" height="100%" autoPlay loop muted>
         <source src="/Bvid.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
       <Routes>
-        {/* Main App route rendering */}
-        <Route
-          path="/"
-          element={
-            !started ? (
-              <WelcomeScreen onStart={handleStart} />
-            ) : (
-              <Questionnaire />
-            )
-          }
-        />
-        {/* Questionnaire route */}
+        {/* Home Route */}
+        <Route path="/" element={<WelcomeScreen onStart={handleStart} />} />
+        
+        {/* Questionnaire Route */}
         <Route path="/questionnaire" element={<Questionnaire />} />
-        {/* Movie Result route */}
+        
+        {/* Movie Result Route */}
         <Route path="/movie-result" element={<MovieResult />} />
+        
+        {/* Movies List Route */}
+        <Route path="/actors" element={<Actors />} />
       </Routes>
     </div>
   );
@@ -54,13 +44,14 @@ const App: React.FC = () => {
 // Wrap App component with Router to provide routing context
 const AppWithRouter: React.FC = () => {
   return (
-    <Router> {/* Wrap the entire App in Router */}
+    <Router>
       <App />
     </Router>
   );
 };
 
 export default AppWithRouter;
+
 
 
 

@@ -1,26 +1,34 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 // Define the props that this component expects
 interface WelcomeScreenProps {
-  onStart: () => void; // A function that runs when the "Get Started" button is clicked
+  onStart: () => void; // Function that runs when "Get Started" is clicked
 }
 
-// Define the WelcomeScreen component as a function component (React.FC)
-const WelcomeScreen: React.FC<WelcomeScreenProps> = function (props) {
+// Define the WelcomeScreen component
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
+  const navigate = useNavigate(); // Hook for navigation
+
   return (
     <div className="welcome-screen">
       <h1>Welcome to Movie Guru</h1>
       <p>Answer a few questions to get a movie recommendation!</p>
       
       {/* Button to start the questionnaire */}
-      <button onClick={props.onStart} className="start-button">
+      <button onClick={onStart} className="start-button">
         Get Started
+      </button>
+
+      {/* Button to go to Movies List */}
+      <button onClick={() => navigate("/actors")} className="start-button">
+        View Actors
       </button>
     </div>
   );
 };
 
-// Export the component so it can be used in other files
 export default WelcomeScreen;
+
 
 
