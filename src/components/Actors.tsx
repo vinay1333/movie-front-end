@@ -127,25 +127,37 @@ const Actors: React.FC = () => {
       </ul>
 
       {/* Add Actor Modal */}
-      {showAddModal && (
-        <div className="modal">
-          <h2>Add Actor</h2>
-          <input 
-            type="text" 
-            value={firstName} 
-            onChange={(e) => setFirstName(e.target.value)} 
-            placeholder="First Name" 
-          />
-          <input 
-            type="text" 
-            value={lastName} 
-            onChange={(e) => setLastName(e.target.value)} 
-            placeholder="Last Name" 
-          />
-          <button onClick={handleAddActor}>Add</button>
-          <button onClick={() => setShowAddModal(false)}>Close</button>
-        </div>
-      )}
+      {/* Add Actor Modal */}
+{showAddModal && (
+  <div className="modal">
+    <div className="modal-container">
+      <h2>Add Actor</h2>
+      <div className="form-group">
+        <label>First Name:</label>
+        <input 
+          type="text" 
+          value={firstName} 
+          onChange={(e) => setFirstName(e.target.value)} 
+          placeholder="First Name" 
+        />
+      </div>
+      <div className="form-group">
+        <label>Last Name:</label>
+        <input 
+          type="text" 
+          value={lastName} 
+          onChange={(e) => setLastName(e.target.value)} 
+          placeholder="Last Name" 
+        />
+      </div>
+      <div className="modal-actions">
+        <button onClick={handleAddActor}>Save</button>
+        <button onClick={() => setShowAddModal(false)}>Close</button>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* Edit Actor Modal */}
       {showEditModal && selectedActor && (
